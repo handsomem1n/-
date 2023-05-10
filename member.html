@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>회원 예약</title>
+    <style>
+    body {
+      font-family: 'Arial', sans-serif;
+    }
+
+    input, button {
+      margin: 10px;
+    }
+    .container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 30px auto;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #888;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+input[type="submit"] {
+  width: 60px;
+  height: 40px;
+  font-size: 18px;
+}
+label {
+      display: inline-block;
+      width: 100px;
+      text-align: left;
+      margin-right: 10px;
+    }
+
+    input[type="text"], input[type="tel"] {
+      display: inline-block;
+      width: 200px;
+    }
+    h1 {
+        text-align: center;
+    }
+      </style>
+  </head>
+  <body>
+    <div class="container">
+    <h1>회원 예약</h1>
+    <form action="/user" method="post">
+      <label for="name">이름 :</label>
+      <input type="text" id="name" name="name"><br>
+      <label for="phone">전화번호 :</label>
+      <input type="tel" id="phone" name="phone"><br>
+      <input type="submit" value="제출" onclick="submitForm(event)">
+    </form>
+
+    <script>
+      function submitForm(event) {
+        event.preventDefault(); // 기본 이벤트를 취소하고, 사용자 정의 이벤트를 실행합니다.
+
+        const form = event.target.form;
+        const name = form.elements.name.value;
+        const phone = form.elements.phone.value;
+
+        if (name && phone) {
+          alert("예약 성공!");
+          window.location.href = "main.html";
+        } else {
+          alert("이름과 휴대폰 번호를 입력해주세요.");
+        }
+      }
+    </script>
+    </div>
+  </body>
+</html>

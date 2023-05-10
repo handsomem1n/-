@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>비회원 전용</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+    }
+
+    input,
+    button {
+      margin: 10px;
+    }
+
+    .container {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 30px auto;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: #888;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    h1 {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1><a href="../main.html"><img src="sikcon.png" width="60" height="60" alt="No image :--()"></a></h1>
+    <h1>비회원 예약</h1>
+    <div class="container">
+      <h2>예약</h2>
+      <form id="reservationForm">
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="phone">전화번호:</label>
+        <input type="tel" id="phone" name="phone" required>
+        <button type="submit">예약</button>
+      </form>
+
+      <h2>예약 확인</h2>
+      <form id="checkReservationForm">
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="checkPhone">전화번호:</label>
+        <input type="tel" id="checkPhone" name="checkPhone" required>
+        <button type="submit">확인</button>
+      </form>
+
+      <script>
+        document.getElementById("reservationForm").addEventListener("submit", function (event) {
+          event.preventDefault();
+          const phone = document.getElementById("phone").value;
+
+          // 서버에 데이터 전송 (예약)
+          fetch('/api/reservation', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ phone: phone })
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('예약이 완료되었습니다.');
+              } else {
+                alert('예약에 실패했습니다. 다시 시도해주세요.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+        });
+
+        document.getElementById("checkReservationForm").addEventListener("submit", function (event) {
+          event.preventDefault();
+          const name = document.getElementById("name").value;
+          const checkPhone = document.getElementById("checkPhone").value;
+
+          // 서버에 데이터 전송(예약 확인)
+          fetch(`/api/reservation/check?name=${name}&phone=${checkPhone}`)
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                if (data.reservation) {
+                  alert(`예약이 확인되었습니다. 예약 정보:\n이름: ${data.reservation.name}\n휴대폰 번호: ${data.reservation.phone}`);
+                } else {
+                  alert('예약 정보가 없습니다. 다시 확인해주세요.');
+                }
+              } else {
+                alert('예약 확인에 실패했습니다. 다시 시도해주세요.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+        });
+
+      </script>
+    </div>
+</body>
+
+</html>
